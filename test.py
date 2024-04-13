@@ -5,7 +5,7 @@ import numpy as np
 from PIL import Image
 from torchvision import transforms, models
 
-device_name = "cuda:0:" if torch.cuda.is_available() else "cpu"
+device_name = "cuda:0" if torch.cuda.is_available() else "cpu"
 device = torch.device(device_name)
 
 resnet_model = models.resnet50(pretrained=True)
@@ -30,7 +30,14 @@ for name, child in resnet_model.named_children():
 
 resnet_model.to(device)
 
-resnet_model.load_state_dict(torch.load('models\\bt_resnet50_model.pt'))
+#resnet_model.load_state_dict(torch.load('models\\bt_resnet50_model.pt'))
+state_dict = torch.load('models\\bt_resnet50_model.pt')
+
+# Load the state dictionary into the model
+resnet_model.load_state_dict(state_dict)
+
+# Print the model to verify if the weights are loaded correctly
+# print(resnet_model)
 
 resnet_model.eval()
 
